@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة الأسئلة والإجابات</title>
+  <style>
+    body {
+      background-color: #2f4f4f; /* Dark Slate Gray */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #qaBox {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 400px;
+    }
+
+    #brandText {
+      font-size: 24px; /* حجم الخط */
+      font-weight: bold; /* خط عريض */
+      margin-bottom: 20px; /* تباعد أسفل النص */
+    }
+
+    #name {
+      width: 100%; /* توسيع حقل الاسم */
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #searchButton {
+      background-color: #4CAF50; /* لون خلفية زر البحث */
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none; /* إزالة تزيين الرابط */
+      display: none; /* إخفاء زر البحث بشكل ابتدائي */
+    }
+
+    #answerText {
+      font-size: 18px; /* حجم الخط */
+      margin-top: 20px; /* تباعد أعلى النص */
+      display: none; /* إخفاء نص الإجابة بشكل ابتدائي */
+      padding: 20px;
+      background-color: #d4af37; /* لون خلفية الإجابة (Metallic Gold) */
+      color: #000; /* لون النص */
+      border-radius: 5px;
+    }
+
+    #result {
+      display: none; /* إخفاء نتيجة البحث بشكل ابتدائي */
+    }
+
+    #brandImage {
+      width: 100%; /* توسيع الصورة لتناسب مربع العرض */
+      border-radius: 10px; /* إضافة زاوية مستديرة للصورة */
+      margin-bottom: 20px; /* تباعد أسفل الصورة */
+    }
+  </style>
+</head>
+<body>
+  <div id="qaBox">
+    <img id="brandImage" src="<a href="https://ibb.co/TLvLSnc"><img src="https://i.ibb.co/TLvLSnc/photo-2024-03-05-21-45-02.jpg" alt="photo-2024-03-05-21-45-02" border="0"></a>
+
+    <p id="brandText">dentists ju21</p>
+
+    <!-- حقل البحث -->
+    <label for="name">❤:</label>
+    <input type="text" id="name" placeholder="your name" oninput="toggleSearchButton()">
+    <button id="searchButton" onclick="countdownAndShowAnswer()">Go to Message❤</button>
+
+    <!-- نص الإجابة -->
+    <div id="result">
+      <p id="answerText"></p>
+    </div>
+  </div>
+
+  <script>
+    function toggleSearchButton() {
+      const nameInput = document.getElementById('name');
+      const searchButton = document.getElementById('searchButton');
+
+      // إظهار زر البحث عندما يكون هناك نص في حقل الاسم
+      searchButton.style.display = nameInput.value.trim() !== '' ? 'block' : 'none';
+    }
+
+    function countdownAndShowAnswer() {
+      let count = 3;
+
+      // تحديث العداد كل ثانية
+      const countdownInterval = setInterval(function () {
+        if (count > 0) {
+          console.log(count);
+          count--;
+        } else {
+          clearInterval(countdownInterval);
+
+          // استدعاء وظيفة الإجابة بعد انتهاء العد التنازلي
+          showAnswer();
+        }
+      }, 1000);
+    }
+
+    function showAnswer() {
+      // استخدم الجزء الخاص بالاستعلام من URL للحصول على الاسم
+      const name = document.getElementById('name').value;
+
+      // قائمة الإجابات العشوائية
+      const answersByCategory = {
+        yearsInDentalSchool: [
+          "Congratulations on completing three successful years in dental school, " + name + "!",
+          "Your dedication and hard work, " + name + ", have truly paid off. Wishing you continued success and excellence in your journey.",
+          "تهانينا على إتمام ثلاث سنوات ناجحة في كلية الأسنان، " + name + "!",
+        ],
+        praiseForStudent: [
+          "تمنياتنا لك، " + name + "، بحياة مليئة بالتفوق والسعادة.",
+          name + ", your commitment to your dental education has been remarkable. May the knowledge and skills you've gained pave the way for a bright future in dentistry.",
+          name + ", your dedication to the field of dentistry is truly commendable. Wishing you continuous growth and success as you move forward.",
+        ],
+        wishesForSuccess: [
+          "May your path be filled with success and joy, " + name + ".",
+          name + ", your journey in dental school has been impressive. May the knowledge you've gained pave the way for a fulfilling career ahead.",
+          "مبروك " + name + " على إتمامك للسنوات الثلاث في كلية الأسنان. Your perseverance and commitment are truly inspiring. Best wishes for your future endeavors.",
+        ],
+      };
+
+      // اختبار لتحديد لغة الإدخال
+      const isArabic = /[\u0600-\u06FF]/.test(name);
+
+      // اختيار إجابة عشوائية من الفئة المناسبة للغة الإدخال
+      let randomAnswer;
+      if (isArabic) {
+        randomAnswer = answersByCategory.yearsInDentalSchool[Math.floor(Math.random() * answersByCategory.yearsInDentalSchool.length)];
+      } else {
+        randomAnswer = answersByCategory.praiseForStudent[Math.floor(Math.random() * answersByCategory.praiseForStudent.length)];
+      }
+
+      // إظهار نتيجة البحث بعد مرور مدة التأخير
+      // قم بعرض الإجابة باستخدام الاسم والإجابة العشوائية
+      const answerText = document.getElementById('answerText');
+      answerText.innerHTML = randomAnswer;
+
+      // إظهار نتيجة البحث
+      document.getElementById('result').style.display = 'block';
+
+      // إخفاء مربع البحث وزر البحث بعد ظهور الإجابة
+      document.getElementById('name').style.display = 'none';
+      document.getElementById('searchButton').style.display = 'none';
+
+      // إظهار نص الإجابة
+      answerText.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
